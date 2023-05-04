@@ -381,11 +381,12 @@ cc_library(
     srcs = [
         "server.cc",
     ],
-    hdrs = ["server.h",
-            "version.h",
+    hdrs = [
+        "server.h",
+        "version.h",
     ],
-    visibility = ["//visibility:public"],
     linkstamp = "version.cc",
+    visibility = ["//visibility:public"],
     deps = [
         ":grpc_status_util",
         ":http_server",
@@ -428,6 +429,7 @@ cc_binary(
     name = "tensorflow_model_server_main_lib",
     srcs = [
     ],
+    linkshared = True,
     visibility = [
         "//visibility:public",
     ],
@@ -448,21 +450,54 @@ cc_binary(
             "@org_tensorflow//tensorflow/core/tpu:tpu_api_dlsym_initializer",
         ]),
     ),
-    linkshared = True,
+)
+
+cc_import(
+    name = "main_lib",
+    shared_library = ":tensorflow_model_server_main_lib",
+    # deps = [
+    #     # cannot find xxx.pb.h, generated protocol buffer compiler
+    #     "//tensorflow_serving/apis:get_model_metadata_cc_proto",
+    #     "//tensorflow_serving/apis:get_model_status_cc_proto",
+    #     "//tensorflow_serving/apis:logging_cc_proto",
+    #     "//tensorflow_serving/apis:model_cc_proto",
+    #     "//tensorflow_serving/apis:model_management_cc_proto",
+    #     "//tensorflow_serving/apis:model_service_cc_proto",
+    #     "//tensorflow_serving/apis:predict_cc_proto",
+    #     "//tensorflow_serving/apis:prediction_service_cc_proto",
+    #     "//tensorflow_serving/config:file_system_storage_path_source_cc_proto",
+    #     "//tensorflow_serving/config:logging_config_cc_proto",
+    #     "//tensorflow_serving/config:model_server_config_cc_proto",
+    #     "//tensorflow_serving/config:monitoring_config_cc_proto",
+    #     "//tensorflow_serving/config:platform_config_cc_proto",
+    #     "//tensorflow_serving/resources:resources_cc_proto",
+    #     "@org_tensorflow//tensorflow/core:protos_all_cc",
+    #     "@org_tensorflow//tensorflow/core/profiler/rpc:profiler_service_impl",
+    # ],
 )
 
 cc_binary(
     name = "tensorflow_model_server",
     srcs = ["main.cc"],
+    # copts = [
+    #     "-Iexternal/com_github_grpc_grpc/include",
+    #     "-Iexternal/com_google_absl",
+    #     "-Iexternal/eigen_archive",
+    #     "-Iexternal/eigen_archive",
+    #     "-Iexternal/org_tensorflow",
+    # ],
     stamp = 1,
     visibility = [
         ":testing",
         "//tensorflow_serving:internal",
     ],
     deps = [
+        ":main_lib",
+        # have to add this dependency, otherwise,
+        # declare every files in srcs,
+        # add deps for xx.pb.h, and -Ixxx
         ":tensorflow_model_server_main_lib",
     ],
-    linkopts = ["-Lbazel-out/k8-opt/bin/tensorflow_serving/model_servers/", "-l:libtensorflow_model_server_main_lib.so"],
 )
 
 py_test(
