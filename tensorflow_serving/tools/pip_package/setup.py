@@ -31,9 +31,9 @@ from setuptools import setup
 DOCLINES = __doc__.split('\n')
 
 # Set when releasing a new version of TensorFlow Serving (e.g. 1.0.0).
-_VERSION = '0.0.0'
+_VERSION = '2.14.0'
 # Have this by default be open; releasing a new version will lock to TF version
-_TF_VERSION = '>=1.2.0,<3'
+_TF_VERSION = '>=2.14.0,<3'
 _TF_VERSION_SANITIZED = _TF_VERSION.replace('-', '')
 
 project_name = 'tensorflow-serving-api'
@@ -80,7 +80,7 @@ setup(
     install_requires=REQUIRED_PACKAGES,
     # Supported Python versions. Match to what TF needs here:
     #   https://github.com/tensorflow/tensorflow/blob/master/tensorflow/tools/pip_package/setup.py
-    python_requires='>=3.8',
+    python_requires='>=3.9',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
@@ -88,7 +88,6 @@ setup(
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3 :: Only',
