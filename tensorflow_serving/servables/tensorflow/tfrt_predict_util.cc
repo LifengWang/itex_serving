@@ -64,8 +64,7 @@ Status PreProcessPredictionWithoutOutputFilter(
             SetDifference(SetDifference(required_inputs, request_inputs),
                           saved_model::GetMapKeys(default_inputs));
         return errors::InvalidArgument(absl::StrCat(
-            "Request inputs do not match required inputs for model `",
-            request.model_spec().name(), "`. Send extra: {",
+            "Request inputs do not match required inputs. Send extra: {",
             absl::StrJoin(sent_extra, ","), "}. Missing but required: {",
             absl::StrJoin(missing, ","), "}."));
       }

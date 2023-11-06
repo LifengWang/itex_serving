@@ -215,7 +215,6 @@ TEST_F(PredictImplTest, PredictionMissingFunction) {
 
 TEST_F(PredictImplTest, PredictionMissingInput) {
   PredictRequest request;
-  request.mutable_model_spec()->set_name(kTestModelName);
   PredictResponse response;
 
   TensorProto tensor_proto;
@@ -235,11 +234,9 @@ TEST_F(PredictImplTest, PredictionMissingInput) {
       RunPredict(tfrt_stub::SavedModel::RunOptions(), kTestModelVersion,
                  saved_model.get(), request, &response);
   EXPECT_EQ(status.code(), tensorflow::error::Code::INVALID_ARGUMENT);
-  EXPECT_THAT(
-      status.message(),
-      HasSubstr(
-          "Request inputs do not match required inputs for model "
-          "`test_model`. Send extra: {x}. Missing but required: {unknown}."));
+  EXPECT_THAT(status.message(),
+              HasSubstr("Request inputs do not match required inputs. Send "
+                        "extra: {x}. Missing but required: {unknown}."));
 }
 
 TEST_F(PredictImplTest, PredictionRunError) {

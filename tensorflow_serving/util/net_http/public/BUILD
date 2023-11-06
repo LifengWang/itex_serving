@@ -13,7 +13,6 @@ package_group(
         "//net/floo/flooefi/...",
         "//platforms/gsys/...",
         "//platforms/redfish/...",
-        "//platforms/syshealth/shdc/...",
     ],
 )
 
